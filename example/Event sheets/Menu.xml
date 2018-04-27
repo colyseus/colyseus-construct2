@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Menu</name>
+    <events>
+        <event-block sid="549164667421129">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="900964519638465" type="System" />
+            </conditions>
+            <actions>
+                <action id="0" name="Connect" sid="916144378189090" type="Colyseus" />
+            </actions>
+        </event-block>
+        <event-block sid="741240535959683">
+            <conditions>
+                <condition id="0" name="On clicked" sid="211178794801188" type="Play" />
+            </conditions>
+            <actions>
+                <action id="-2" name="Go to layout" sid="855863571906013" type="System">
+                    <param id="0" name="Layout">Game</param>
+                </action>
+            </actions>
+        </event-block>
+    </events>
+</c2eventsheet>
