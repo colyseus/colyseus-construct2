@@ -125,7 +125,7 @@ cr.plugins_.Colyseus = function(runtime)
      }
 
      for (var i = 0, len = this.listeners[path].length; i < len; i++) {
-       let matches = change.path[i].match(this.listeners[path][i]);
+       var matches = change.path[i].match(this.listeners[path][i]);
        if (!matches || matches.length === 0 || matches.length > 2) {
          return false;
        }
