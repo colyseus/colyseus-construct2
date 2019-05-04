@@ -112,7 +112,7 @@ AddCondition(15,0,"Is field","Schema","Is field {0}"," Only available during \"O
 //			 script_name);		// corresponding runtime function name
 
 // example
-AddStringParam("Server Url", "Server url");
+AddStringParam("ServerUrl", "Enter the url of the server to connect to");
 AddAction(0, af_none, "Connect", "Client", "Connect", "Open connection with server {0}", "Connect");
 
 AddAction(1, af_none, "Disconnect", "Client", "Disconnect", "Close connection with server", "Disconnect");
