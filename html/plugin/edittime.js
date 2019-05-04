@@ -95,10 +95,10 @@ AddStringParam("Path","Path of the variable you'd like to listen for. e.g. \"ent
 AddCondition(12, cf_trigger,"On Remove","Schema","On remove at {0}","Triggers when an item is removed from ArraySchema or MapSchema.","OnSchemaRemove");
 
 AddStringParam("Index","Index value (e.g. Colyseus.SessionId) ");
-AddCondition(14,none,"Is index","Schema","Is index {0}","Only available for Arrays and Maps. Check if index of current item is equals to provided value.","IsIndex");
+AddCondition(14,0,"Is index","Schema","Is index {0}","Only available for Arrays and Maps. Check if index of current item is equals to provided value.","IsIndex");
 
 AddStringParam("field","Field name");
-AddCondition(15,none,"Is field","Schema","Is field {0}"," Only available during \"On change\" of a direct object. Checks if a field name has changed.","IsField");
+AddCondition(15,0,"Is field","Schema","Is field {0}"," Only available during \"On change\" of a direct object. Checks if a field name has changed.","IsField");
 ////////////////////////////////////////
 
 // Actions
