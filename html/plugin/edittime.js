@@ -3,7 +3,7 @@
 	return {
 		"name":			"Colyseus",				// as appears in 'insert object' dialog, can be changed as long as "id" stays the same
 		"id":			"Colyseus",				// this is used to identify this plugin and is saved to the project; never change it
-		"version":      "0.9.4",					// (float in x.y format) Plugin version - C2 shows compatibility warnings based on this
+		"version":      "0.10.0",					// (float in x.y format) Plugin version - C2 shows compatibility warnings based on this
 		"description":	"Allows you to develop develop multiplayer games using Colyseus.",
 		"author":		"Endel Dreyer",
 		"help url":		" ",
@@ -85,14 +85,22 @@ AddCondition(8, cf_trigger, "Listen", "Room", "Listen for {0} ({1} operations)",
 AddStringParam("Scheam","Schema to listen for");
 AddCondition(9, cf_trigger,"On add","Schema","On add at {0}","Triggers when an item is added to ArraySchema or MapSchema.","OnSchemaAdd");
 
-AddStringParam("Path","Path of the variable you'd like to listen for. e.g. \"entities\");
-AddCondition(10, cf_trigger,"On Field Change","Schema","On field change at {0}","Triggers when a field is changed inside a Schema instance. Need to use ","OnSchemaFieldChange");
+AddStringParam("Path","Path of the variable you'd like to listen for. e.g. \"entities\" ");
+AddCondition(10, cf_trigger,"On Field Change","Schema","On field change at {0}","Triggers when a field is changed inside a Schema instance.","OnSchemaFieldChange");
 
-AddStringParam("Path","Path of the variable you'd like to listen for. e.g. \"entities\");
-AddCondition(11, cf_trigger,"On Field Change","Schema","On field change at {0}","Triggers when a field is changed inside a Schema instance. Need to use ","OnSchemaChange");
+AddStringParam("Path","Path of the variable you'd like to listen for. e.g. \"entities\" ");
+AddCondition(11, cf_trigger,"On Change","Schema","On change at {0}","Triggers when an item is changed inside ArraySchema or MapSchema.","OnSchemaChange");
 
+AddStringParam("Path","Path of the variable you'd like to listen for. e.g. \"entities\" ");
+AddCondition(12, cf_trigger,"On Remove","Schema","On remove at {0}","Triggers when an item is removed from ArraySchema or MapSchema.","OnSchemaRemove");
 
+AddStringParam("Index","Index value (e.g. Colyseus.SessionId) ");
+AddCondition(14,none,"Is index","Schema","Is index {0}","Only available for Arrays and Maps. Check if index of current item is equals to provided value.","IsIndex");
+
+AddStringParam("field","Field name");
+AddCondition(15,none,"Is field","Schema","Is field {0}"," Only available during \"On change\" of a direct object. Checks if a field name has changed.","IsField");
 ////////////////////////////////////////
+
 // Actions
 
 // AddAction(id,				// any positive integer to uniquely identify this action
@@ -110,11 +118,12 @@ AddAction(0, af_none, "Connect", "Client", "Connect", "Open connection with serv
 AddAction(1, af_none, "Disconnect", "Client", "Disconnect", "Close connection with server", "Disconnect");
 
 AddStringParam("Room name", "Room name");
-AddVariadicParams("Options {n}", "The \"requestJoin\" options.");
-AddAction(2, af_none, "Join Room", "Room", "Join room \"{0}\" with options <i>{...}</i>", "Join a room by name", "JoinRoom");
+AddStringParam("Options", "The \"requestJoin\" options, in JSON format.");
+AddAction(2, af_none, "Join Room", "Room", "Join room {0} with options {1}.", "Join a room by name", "JoinRoom");
 
-AddAnyTypeParam("Message", "This message will arrive at on server-side at \"onMessage\".");
-AddAction(3, af_none, "Send message", "Room", "Send message {0} to room.", "Send message to a room", "RoomSend");
+AddAnyTypeParam("Type", "Type of the message.");
+AddAnyTypeParam("Message", "JSON representation of the message. Messages arrive on server-side at \"onMessage\".");
+AddAction(3, af_none, "Send message", "Room", "Send {0} with {1}", "Send message to a room", "RoomSend");
 
 AddAction(4, af_none, "Leave room", "Room", "Leave from the room", "Disconnect client from the room.", "RoomLeave");
 
@@ -131,17 +140,29 @@ AddAction(4, af_none, "Leave room", "Room", "Leave from the room", "Disconnect c
 
 // example
 AddStringParam("Variable", "Name of the variable. e.g. \"id\", \"number\", \"axis\"");
-AddExpression(0, ef_return_any, "Path", "Room", "Path", "A variable present in the path you're listening to.");
+AddExpression(0, ef_return_any, "Path", "General", "Path", "A variable present in the path you're listening to.");
 
-AddExpression(1, ef_return_any, "Value", "Room", "Value", "The value you're listening to. (Only avaliable during Listen)");
-
-AddStringParam("Variable", "A dot separated path to the variable. e.g. \"messages.0\"");
-AddExpression(2, ef_return_any, "ValueAt", "Room", "ValueAt", "The nested value you're listening to. (Only avaliable during Listen)");
+AddExpression(1, ef_return_any, "Value", "General", "Value", "The value you're listening to. (Only avaliable during Listen)");
 
 AddStringParam("Variable", "A dot separated path to the variable. e.g. \"messages.0\"");
-AddExpression(3, ef_return_any, "State", "Room", "State", "Returns a value from room's state");
+AddExpression(2, ef_return_any, "ValueAt", "General", "ValueAt", "The nested value you're listening to. (Only avaliable during Listen)");
 
-AddExpression(4, ef_return_any, "SessionId", "Room", "SessionId", "Unique sessionId of the current user");
+AddStringParam("Variable", "A dot separated path to the variable. e.g. \"messages.0\"");
+AddExpression(3, ef_return_any, "State", "General", "State", "Returns a value from room's state");
+
+AddExpression(4, ef_return_any, "SessionId", "General", "SessionId", "Unique sessionId of the current user");
+
+AddExpression(5, ef_return_any, "PreviousValue", "General", "PreviousValue", "Get previous value from current field. Only available during \"On change\" on an instance variable. Not avaialble for arrays and maps.");
+
+AddExpression(6, ef_return_any, "CurrentField", "General", "CurrentField", "Get current field being changed. Available during \"On field change\" ");
+
+AddExpression(7,ef_return_any,"CurrentIndex,","General","CurrentIndex","Get index of current item. Available during \"On Add\", \"On Change\" or \"On Remove\" ")
+
+AddExpression(8,ef_return_any,"CurrentValue","General","CurrentValue","Get value from current item")
+
+AddStringParam("Variable", "A dot separated path to the variable. e.g. \"messages.0\" ");
+AddExpression(9,ef_return_string,"CurrentValueAt","General","CurrentValueAt","Get nested value from current item")
+
 
 ////////////////////////////////////////
 ACESDone();
