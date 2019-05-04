@@ -82,6 +82,15 @@ AddComboParam("Operation", "You may limit to listen for \"add\", \"replace\" or 
 AddCondition(8, cf_trigger, "Listen", "Room", "Listen for {0} ({1} operations)", "Triggered when the room broadcasts a message, or sends a message directly to this client.", "OnRoomListen");
 
 
+AddStringParam("Scheam","Schema to listen for");
+AddCondition(9, cf_trigger,"On add","Schema","On add at {0}","Triggers when an item is added to ArraySchema or MapSchema.","OnSchemaAdd");
+
+AddStringParam("Path","Path of the variable you'd like to listen for. e.g. \"entities\");
+AddCondition(10, cf_trigger,"On Field Change","Schema","On field change at {0}","Triggers when a field is changed inside a Schema instance. Need to use ","OnSchemaFieldChange");
+
+AddStringParam("Path","Path of the variable you'd like to listen for. e.g. \"entities\");
+AddCondition(11, cf_trigger,"On Field Change","Schema","On field change at {0}","Triggers when a field is changed inside a Schema instance. Need to use ","OnSchemaChange");
+
 
 ////////////////////////////////////////
 // Actions
@@ -95,7 +104,8 @@ AddCondition(8, cf_trigger, "Listen", "Room", "Listen for {0} ({1} operations)",
 //			 script_name);		// corresponding runtime function name
 
 // example
-AddAction(0, af_none, "Connect", "Client", "Connect", "Open connection with server", "Connect");
+AddStringParam("Server Url", "Server url");
+AddAction(0, af_none, "Connect", "Client", "Connect", "Open connection with server {0}", "Connect");
 
 AddAction(1, af_none, "Disconnect", "Client", "Disconnect", "Close connection with server", "Disconnect");
 
