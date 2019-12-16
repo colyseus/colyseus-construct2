@@ -3,7 +3,7 @@
 	return {
 		"name":			"Colyseus",				// as appears in 'insert object' dialog, can be changed as long as "id" stays the same
 		"id":			"Colyseus",				// this is used to identify this plugin and is saved to the project; never change it
-		"version":      "0.10.0",					// (float in x.y format) Plugin version - C2 shows compatibility warnings based on this
+		"version":      "0.11.0",					// (float in x.y format) Plugin version - C2 shows compatibility warnings based on this
 		"description":	"Allows you to develop develop multiplayer games using Colyseus.",
 		"author":		"Endel Dreyer",
 		"help url":		" ",
@@ -54,8 +54,8 @@
 //				display_str,		// as appears in event sheet - use {0}, {1} for parameters and also <b></b>, <i></i>
 //				description,		// appears in event wizard dialog when selected
 //				script_name);		// corresponding runtime function name
-				
-// example				
+
+// example
 AddCondition(0, cf_trigger, "On Open", "Client", "On Open", "Triggered when connection with server is opened.", "OnOpen");
 
 AddCondition(1, cf_trigger, "On Error", "Client", "On Error", "Triggered when an error happened on the server.", "OnClientError");
@@ -180,7 +180,7 @@ ACESDone();
 var property_list = [
 	new cr.Property(ept_text, 	"End point",		"ws://localhost:2567",		"Endpoint of the Colyseus server")
 	];
-	
+
 // Called by IDE when a new object type is to be created
 function CreateIDEObjectType()
 {
@@ -203,17 +203,17 @@ IDEObjectType.prototype.CreateInstance = function(instance)
 function IDEInstance(instance, type)
 {
 	assert2(this instanceof arguments.callee, "Constructor called as a function");
-	
+
 	// Save the constructor parameters
 	this.instance = instance;
 	this.type = type;
-	
+
 	// Set the default property values from the property table
 	this.properties = {};
-	
+
 	for (var i = 0; i < property_list.length; i++)
 		this.properties[property_list[i].name] = property_list[i].initial_value;
-		
+
 	// Plugin-specific variables
 	// this.myValue = 0...
 }
