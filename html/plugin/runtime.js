@@ -148,7 +148,7 @@ cr.plugins_.Colyseus = function (runtime) {
 
   Acts.prototype.Disconnect = function () {
     if (this.client) {
-      this.client.close();
+      delete this['client'];
     }
   };
 
