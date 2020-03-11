@@ -163,6 +163,8 @@ AddExpression(8,ef_return_any,"CurrentValue","General","CurrentValue","Get value
 AddStringParam("Variable", "A dot separated path to the variable. e.g. \"messages.0\" ");
 AddExpression(9,ef_return_string,"CurrentValueAt","General","CurrentValueAt","Get nested value from current item")
 
+AddExpression(10,ef_return_string,"ErrorMessage","General","ErrorMessage","Get latest error message emitted by the room.")
+
 
 ////////////////////////////////////////
 ACESDone();

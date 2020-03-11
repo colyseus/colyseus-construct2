@@ -70,13 +70,6 @@ cr.plugins_.Colyseus = function (runtime) {
   function Cnds() { };
 
   /**
-   * Conditions for Client
-   */
-  Cnds.prototype.OnOpen = function () { return true; };
-  Cnds.prototype.OnClose = function () { return true; };
-  Cnds.prototype.OnClientError = function () { return true; };
-
-  /**
    * Conditions for Room
    */
   Cnds.prototype.OnJoinRoom = function () { return true; };
@@ -88,53 +81,15 @@ cr.plugins_.Colyseus = function (runtime) {
 
   /* Schema Serializer */
   Cnds.prototype.OnSchemaAdd = function (path) { return checkPath(this.lastPath, path); },
-    Cnds.prototype.OnSchemaChange = function (path) {
-      console.log("OnSchemaChange:", this.lastPath, path);
-      return checkPath(this.lastPath, path);
-    },
-    Cnds.prototype.OnSchemaFieldChange = function (path) { return checkPath(this.lastPath, path); },
-    Cnds.prototype.OnSchemaRemove = function (path) { return checkPath(this.lastPath, path); },
+  Cnds.prototype.OnSchemaChange = function (path) {
+    console.log("OnSchemaChange:", this.lastPath, path);
+    return checkPath(this.lastPath, path);
+  },
+  Cnds.prototype.OnSchemaFieldChange = function (path) { return checkPath(this.lastPath, path); },
+  Cnds.prototype.OnSchemaRemove = function (path) { return checkPath(this.lastPath, path); },
 
-    Cnds.prototype.IsIndex = function (index) { return this.lastIndex === index; },
-    Cnds.prototype.IsField = function (field) { return this.lastField === field; }
-
-  //  var operations = ['any', 'add', 'replace', 'remove'];
-  //  Cnds.prototype.OnRoomListen = function (path, operationIndex) {
-  //    var self = this;
-  //    var change = this.lastChange;
-  //    var operation = operations[operationIndex];
-
-  //    // the operation doesn't match with the operation user is interested in.
-  //    if (operation !== "any" && change.operation !== operation) {
-  //      return false;
-  //    }
-
-  //    var rules = path.split("/");
-
-  //    if (!this.listeners[path]) {
-  //      rules = rules.map(function(segment) {
-  //        // replace placeholder matchers
-  //        return (segment.indexOf(":") === 0)
-  //          ? self.room.matcherPlaceholders[segment] || self.room.matcherPlaceholders[":*"]
-  //          : new RegExp("^" + segment + "$");
-  //      });
-  //      this.listeners[path] = rules;
-  //    }
-
-  //    if (change.path.length !== this.listeners[path].length) {
-  //      return false;
-  //    }
-
-  //    for (var i = 0, len = this.listeners[path].length; i < len; i++) {
-  //      let matches = change.path[i].match(this.listeners[path][i]);
-  //      if (!matches || matches.length === 0 || matches.length > 2) {
-  //        return false;
-  //      }
-  //    }
-
-  //    // alright! let's execute the callback!
-  //    return true;
-  //  };
+  Cnds.prototype.IsIndex = function (index) { return this.lastIndex === index; },
+  Cnds.prototype.IsField = function (field) { return this.lastField === field; }
 
   pluginProto.cnds = new Cnds();
 
@@ -164,7 +119,8 @@ cr.plugins_.Colyseus = function (runtime) {
       self.sessionId = room.sessionId;
       self.runtime.trigger(pluginProto.cnds.OnJoinRoom, self);
 
-      room.onError(function () {
+      room.onError(function (e) {
+        self.lastError = e;
         self.runtime.trigger(pluginProto.cnds.OnRoomError, self);
       });
 
@@ -231,13 +187,8 @@ cr.plugins_.Colyseus = function (runtime) {
         self.runtime.trigger(pluginProto.cnds.OnMessage, self);
       });
 
-      //  room.listen(function(change) {
-      //    self.lastChange = change;
-      //    self.lastValue = change.value;
-      //    self.runtime.trigger(pluginProto.cnds.OnRoomListen, self);
-      //  });
-
     }).catch(function(err) {
+      self.lastError = e;
       self.runtime.trigger(pluginProto.cnds.OnRoomError, self);
     });
   };
@@ -303,6 +254,10 @@ cr.plugins_.Colyseus = function (runtime) {
   Exps.prototype.ValueAt = function (ret, path) {
     ret.set_any(getDeepVariable(path, this.lastValue));
   };
+
+  Exps.prototype.ErrorMessage = function (ret) {
+    ret.set_any(this.lastError);
+  }
 
   pluginProto.exps = new Exps();
 
